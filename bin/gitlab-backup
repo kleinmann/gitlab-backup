@@ -1,0 +1,65 @@
+#!/usr/bin/env ruby
+
+require "gitlab-backup"
+require "io/console"
+require "optparse"
+require "yaml"
+
+options = {}
+
+parser = OptionParser.new do |opts|
+  cmd = File.basename($0)
+
+  opts.banner = "usage: #{cmd} [options] /path/to/backupdir"
+
+  opts.on("-c", "--config FILE", "Path to config file.") do |config_file|
+    options["config_file"] = config_file
+  end
+
+  opts.on("-h", "--host HOST[:PORT]", "GitLab host to be backed up, e.g. http://gitlab.com") do |token|
+    options["token"] = token
+  end
+
+  opts.on("-t", "--token TOKEN", "Private token for account to be backed up.") do |token|
+    options["token"] = token
+  end
+
+  opts.on("-h", "--help", "Show this help message and exit.") do
+    puts opts
+    exit
+  end
+
+  opts.on("-v", "--version", "Display the program's version and exit.") do
+    puts "#{cmd} (version #{Gitlab::Backup::VERSION})"
+    exit
+  end
+end
+
+parser.parse!
+
+config = {}
+
+if options["config_file"]
+  begin
+    path = File.expand_path(options["config_file"])
+
+    config = YAML.load_file(path)
+
+    unless config
+      puts "Error: invalid config file: #{path}."
+      exit
+    end
+  rescue YAML::SyntaxError, StandardError
+    puts "Error: invalid config file: #{path}."
+    exit
+  end
+end
+
+config.merge!(options)
+
+if ARGV.empty? || !config["token"]
+  puts parser.banner
+  exit
+end
+
+Gitlab::Backup.backup(config["host"], config["token"], ARGV.first)
