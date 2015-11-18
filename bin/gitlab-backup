@@ -10,7 +10,7 @@ options = {}
 parser = OptionParser.new do |opts|
   cmd = File.basename($0)
 
-  opts.banner = "usage: #{cmd} [options] /path/to/backupdir"
+  opts.banner = "usage: #{cmd} [options] path"
 
   opts.on("-c", "--config FILE", "Path to config file.") do |config_file|
     options["config_file"] = config_file

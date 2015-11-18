@@ -6,7 +6,7 @@ A command line tool for backing up GitLab repositories.
 ## Prerequisites
 
 * [Git](http://git-scm.com/)
-* [Ruby](http://www.ruby-lang.org/) (>= 1.9.3)
+* [Ruby](https://www.ruby-lang.org/) (>= 2.1.0)
 
 To backup your repositories you **must** have the SCM tools
 your repositories use on your `PATH`.
@@ -19,7 +19,7 @@ your repositories use on your `PATH`.
 
 ## Usage
 
-    $ gitlab-backup [options] /path/to/backupdir
+    $ gitlab-backup [options] ~/backup
 
 See the help prompt for more info:
 
@@ -46,3 +46,7 @@ put the following in a config file and pass it to `gitlab-backup`:
 ## License
 
 [ISC](LICENSE)
+
+## Thanks
+
+This project is based on the [previous work](https://bitbucket.org/seth/bitbucket-backup) of Seth Jackson for bitbucket-backup.
