@@ -1,5 +1,6 @@
 require "net/https"
 require "json"
+require "pp"
 
 module Gitlab
   module Backup
@@ -23,7 +24,7 @@ module Gitlab
       repos = get_repo_list(host, token)
 
       repos.each do |repo|
-        Gitlab::Backup::Repository.new(repo, host, token, backup_root).backup
+        Gitlab::Backup::Repository.new(repo, token, backup_root).backup
       end
     end
 
@@ -60,15 +61,17 @@ module Gitlab
     #     the repositories the user has access to.
     #
     def self.get_repo_list(host, token)
-      uri = URI.parse("#{host}/api/v3/projects/all?private_token=#{token}")
+      uri = URI.parse("#{host}/api/v3/projects")
 
       http = Net::HTTP.new(uri.host, uri.port)
 
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      if host =~ /\Ahttps/
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
 
       request = Net::HTTP::Get.new(uri.request_uri)
-      request.basic_auth(token)
+      request.add_field("PRIVATE-TOKEN", token)
 
       response = http.request(request)
 

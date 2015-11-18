@@ -16,15 +16,15 @@ parser = OptionParser.new do |opts|
     options["config_file"] = config_file
   end
 
-  opts.on("-h", "--host HOST[:PORT]", "GitLab host to be backed up, e.g. http://gitlab.com") do |token|
-    options["token"] = token
+  opts.on("-h", "--host HOST", "GitLab host to be backed up, e.g. http://gitlab.com") do |host|
+    options["host"] = host
   end
 
   opts.on("-t", "--token TOKEN", "Private token for account to be backed up.") do |token|
     options["token"] = token
   end
 
-  opts.on("-h", "--help", "Show this help message and exit.") do
+  opts.on("--help", "Show this help message and exit.") do
     puts opts
     exit
   end
@@ -57,7 +57,7 @@ end
 
 config.merge!(options)
 
-if ARGV.empty? || !config["token"]
+if ARGV.empty? || !config["token"] || !config["host"]
   puts parser.banner
   exit
 end
