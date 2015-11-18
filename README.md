@@ -8,8 +8,7 @@ A command line tool for backing up GitLab repositories.
 * [Git](http://git-scm.com/)
 * [Ruby](https://www.ruby-lang.org/) (>= 2.1.0)
 
-To backup your repositories you **must** have the SCM tools
-your repositories use on your `PATH`.
+To backup your repositories you **must** have the git on your `PATH`.
 
 
 ## Installation

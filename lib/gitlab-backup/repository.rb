@@ -41,7 +41,7 @@ module Gitlab
       # Performs a backup of the repository.
       #
       def backup
-        puts "Backing up: #{repo["name"]}."
+        puts "Backing up: #{repo["name_with_namespace"]}."
 
         unless Gitlab::Backup.have_git?
           puts "Warning: git not found on PATH. Skipping..."
@@ -97,7 +97,7 @@ module Gitlab
       end
 
       def dir_for_repo
-        File.expand_path("#{backup_root}/#{repo["namespace"]["path"]}/#{repo["path"]}/src")
+        File.expand_path("#{backup_root}/#{repo["path_with_namespace"]}/src")
       end
     end
   end
